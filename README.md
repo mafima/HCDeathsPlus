@@ -4,6 +4,11 @@ This addon displays and logs hardcore deaths.
 You can move the log by holding ctrl and shift and dragging ther log.    
 You can reset the position by holding ctrl and shift and right clicking the log.    
 
+## Installation
+- Click "Code" and Download Zip.
+- Extract the content to Wow\Interface\AddOns
+- rename to HCDeaths
+
 ## Commands:
 - /hcdeath message - toggle system death messages
 - /hcdeath toast - toggle toast popups
