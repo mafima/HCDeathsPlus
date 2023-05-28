@@ -17,7 +17,7 @@ HCDeaths_Settings = {
 
 local mainposition = "CENTER"
 local offsetxupdatelog = 0
-local xOffset = -900 -- pixel to move the popup in x direction
+local xOffset = -300 -- pixel to move the popup in x direction
 local foldername = "HCDeaths"
 local media = "Interface\\Addons\\"..foldername.."\\media\\"
 
