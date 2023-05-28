@@ -17,7 +17,9 @@ HCDeaths_Settings = {
 
 local mainposition = "CENTER"
 local offsetxupdatelog = 0
-local xOffset = -700 -- pixel to move the popup in x direction
+local xOffset = -900 -- pixel to move the popup in x direction
+local foldername = "HCDeaths"
+local media = "Interface\\Addons\\"..foldername.."\\media\\"
 
 local deathsound = {
 	["Dwarf"] = {
@@ -146,7 +148,6 @@ local progress = {
 local HCDeath = CreateFrame("Frame", nil, UIParent)
 HCDeaths = {}
 
-local media = "Interface\\Addons\\HCDeaths\\media\\"
 local deaths = {}
 local queried
 local logged
@@ -160,7 +161,7 @@ do
 	HCDeath.texture = HCDeath:CreateTexture(nil,"LOW")
 
 	local finalxoffset = 0
-	if moveleft then
+	if HCDeaths_Settings.moveleft then
 		finalxoffset = xOffset
 	end
 	HCDeath.texture:SetPoint("TOPLEFT", UIErrorsFrame, "TOPLEFT", finalxoffset, -20 ) -- toast
@@ -665,7 +666,7 @@ function HCDeath:movelefttoggle()
 	end
 
 	local finalxoffset = 0
-	if moveleft then
+	if HCDeaths_Settings.moveleft then
 		finalxoffset = xOffset
 	end
 	HCDeath.texture:SetPoint("TOPLEFT", UIErrorsFrame, "TOPLEFT", finalxoffset, -20 ) -- toast
