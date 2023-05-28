@@ -12,7 +12,12 @@ HCDeaths_Settings = {
 	deathsound = true,
 	levelsound = true,
 	roar = false,
+	moveleft = true
 }
+
+local mainposition = "CENTER"
+local offsetxupdatelog = 0
+local xOffset = -700 -- pixel to move the popup in x direction
 
 local deathsound = {
 	["Dwarf"] = {
@@ -145,38 +150,44 @@ local media = "Interface\\Addons\\HCDeaths\\media\\"
 local deaths = {}
 local queried
 local logged
-local toastTime = 8 -- number of seconds the toast will display
+local toastTime = 4 -- number of seconds the toast will display
+
 
 local twidth, theight = 332.8, 166.4
 
 do	
 	-- texture
 	HCDeath.texture = HCDeath:CreateTexture(nil,"LOW")
-	HCDeath.texture:SetPoint("CENTER", UIErrorsFrame, "CENTER", 0, -20) -- toast
+
+	local finalxoffset = 0
+	if moveleft then
+		finalxoffset = xOffset
+	end
+	HCDeath.texture:SetPoint("TOPLEFT", UIErrorsFrame, "TOPLEFT", finalxoffset, -20 ) -- toast
 	HCDeath.texture:SetTexture(media.."Ring\\".."Ring")
 	HCDeath.texture:SetWidth(twidth)
 	HCDeath.texture:SetHeight(theight)
 	HCDeath.texture:Hide()
 
 	HCDeath.race = HCDeath:CreateTexture(nil,"BACKGROUND")
-	HCDeath.race:SetPoint("CENTER", HCDeath.texture, "CENTER", -43, -24)
+	HCDeath.race:SetPoint(mainposition, HCDeath.texture, mainposition, -43, -24)
 	HCDeath.race:Hide()
 
 	HCDeath.class = HCDeath:CreateTexture(nil,"BACKGROUND")
-	HCDeath.class:SetPoint("CENTER", HCDeath.texture, "CENTER", 0, 10)
+	HCDeath.class:SetPoint(mainposition, HCDeath.texture, mainposition, 0, 10)
 	HCDeath.class:Hide()
 
 	-- text
 	local font, size, outline = "Fonts\\FRIZQT__.TTF", 16, "OUTLINE"
 	
 	HCDeath.level = HCDeath:CreateFontString(nil, "LOW", "GameFontNormal")
-	HCDeath.level:SetPoint("TOP", HCDeath.texture, "CENTER", 42, -15)
+	HCDeath.level:SetPoint("TOP", HCDeath.texture, mainposition, 42, -15)
 	HCDeath.level:SetWidth(HCDeath.texture:GetWidth())
 	HCDeath.level:Hide()
 	HCDeath.level:SetFont(font, size, outline)
 
 	HCDeath.name = HCDeath:CreateFontString(nil, "LOW", "GameFontNormal")
-	HCDeath.name:SetPoint("TOP", HCDeath.texture, "CENTER", 0, -44)
+	HCDeath.name:SetPoint("TOP", HCDeath.texture, mainposition, 0, -44)
 	HCDeath.name:SetWidth(HCDeath.texture:GetWidth())
 	HCDeath.name:Hide()
 	HCDeath.name:SetFont(font, size, outline)
@@ -643,6 +654,23 @@ function HCDeath:reset()
 	HCDeaths_Settings.roar = false
 end
 
+function HCDeath:movelefttoggle()
+	
+	if HCDeaths_Settings.moveleft then
+		HCDeaths_Settings.moveleft = false
+		HCDeath:print("moveleft false")
+	else
+		HCDeaths_Settings.moveleft = true
+		HCDeath:print("moveleft true")
+	end
+
+	local finalxoffset = 0
+	if moveleft then
+		finalxoffset = xOffset
+	end
+	HCDeath.texture:SetPoint("TOPLEFT", UIErrorsFrame, "TOPLEFT", finalxoffset, -20 ) -- toast
+end
+
 function HCDeath:print(message)
 	DEFAULT_CHAT_FRAME:AddMessage("HCDeaths: "..message, 1, .5, 0)
 end
@@ -707,15 +735,19 @@ local function HCDeaths_commands(msg, editbox)
     elseif msg == "reset" then
         HCDeath:reset()
 		HCDeath:print("settings reset")
+	elseif msg == "moveleft" then
+		HCDeath:movelefttoggle()
     else
 		HCDeath:print("commands:")
-		HCDeath:print("/hcdeath message - toggle system death messages")
-		HCDeath:print("/hcdeath toast - toggle toast popups")
-		HCDeath:print("/hcdeath color - toggle toast ring colors")
-		HCDeath:print("/hcdeath deathsound - toggle toast deathsounds")
-		HCDeath:print("/hcdeath levelsound - toggle toast levelsounds")
-		HCDeath:print("/hcdeath roar - death roars instead of raid alert")
-		HCDeath:print("/hcdeath reset - reset settings")
+		HCDeath:print("/hcd message - toggle system death messages")
+		HCDeath:print("/hcd toast - toggle toast popups")
+		HCDeath:print("/hcd color - toggle toast ring colors")
+		HCDeath:print("/hcd deathsound - toggle toast deathsounds")
+		HCDeath:print("/hcd levelsound - toggle toast levelsounds")
+		HCDeath:print("/hcd roar - death roars instead of raid alert")
+		HCDeath:print("/hcd reset - reset settings")
+		HCDeath:print("/hcd moveleft - move the toast popup to the left or middle")
+		HCDeath:print("as a command /hcdeath or /hcd can be used.")
     end
 end
 
@@ -740,7 +772,7 @@ do
 	HCDeathsLog:SetBackdropBorderColor(.5,.5,.5,1)
 
 	HCDeathsLog.icon = HCDeathsLog:CreateTexture(nil,"LOW")
-	HCDeathsLog.icon:SetPoint("CENTER", HCDeathsLog, "TOPLEFT", 14, -6)
+	HCDeathsLog.icon:SetPoint(mainposition, HCDeathsLog, "TOPLEFT", 14, -6)
 	HCDeathsLog.icon:SetTexture(media.."Log\\".."Skull")
 	HCDeathsLog.icon:SetWidth(38)
 	HCDeathsLog.icon:SetHeight(38)
@@ -761,8 +793,9 @@ do
 	HCDeathsLog.container = CreateFrame("Frame", "HCDeathsLogContainer", HCDeathsLog)
 	HCDeathsLog.container:SetHeight(max_height - 5)
 	HCDeathsLog.container:SetWidth(max_width - 40)
-	HCDeathsLog.container:SetPoint("CENTER", HCDeathsLog, 10, 0)
+	HCDeathsLog.container:SetPoint(mainposition, HCDeathsLog, 10, 0)
   
+	-- make draggable
 	HCDeathsLog:SetMovable(true)
 	HCDeathsLog:SetClampedToScreen(true)
 	HCDeathsLog:SetUserPlaced(true)
