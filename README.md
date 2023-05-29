@@ -26,6 +26,9 @@ You can reset the position by holding ctrl and shift and right clicking the log.
 
 ![hcd1](https://github.com/GryllsAddons/HCDeaths/assets/107083057/58b967c1-df33-4620-a2b4-2ae163768802)
 
+![hcd4](https://user-images.githubusercontent.com/3407209/241578780-e16e44f8-b717-440a-8828-429fa2d95049.png)
+moved the popup to the left!
+
 ## Death Logs:
 
 Hardcore deaths will be saved to *"\WTF\Account\ACCOUNTNAME\SavedVariables\HCDeaths.lua"*.
